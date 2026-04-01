@@ -1,0 +1,41 @@
+{
+  "brandTitle": "唯的网络空间",
+  "quote": "记录一些思考和生活",
+  "nav": [
+    {
+      "id": "essay",
+      "label": "随笔",
+      "ornament": "·",
+      "order": 1,
+      "visible": true
+    },
+    {
+      "id": "bits",
+      "label": "絮语",
+      "ornament": "·",
+      "order": 2,
+      "visible": true
+    },
+    {
+      "id": "memo",
+      "label": "小记",
+      "ornament": "·",
+      "order": 3,
+      "visible": false
+    },
+    {
+      "id": "archive",
+      "label": "归档",
+      "ornament": "·",
+      "order": 4,
+      "visible": true
+    },
+    {
+      "id": "about",
+      "label": "关于",
+      "ornament": "·",
+      "order": 5,
+      "visible": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "唯的网络空间",
+  "description": "唯的个人网站",
+  "defaultLocale": "zh-CN",
+  "footer": {
+    "startYear": 2026,
+    "showCurrentYear": true,
+    "copyright": "Whono · Personal Site · by 唯"
+  },
+  "socialLinks": {
+    "github": "https://github.com/changshou83",
+    "x": null,
+    "email": null,
+    "presetOrder": {
+      "github": 1,
+      "x": 3,
+      "email": 2
+    },
+    "custom": []
+  }
+}
