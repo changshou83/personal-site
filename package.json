@@ -32,7 +32,9 @@
     "font:charset": "node ./scripts/font-charset.mjs",
     "font:subset": "node ./scripts/font-subset.mjs",
     "font:build": "npm run font:charset && npm run font:subset",
-    "new:bit": "node ./scripts/new-bit.mjs"
+    "new:bit": "node ./scripts/new-bit.mjs",
+    "deploy":  "astro build && wrangler deploy",
+    "preview:wrangler": "astro build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
@@ -49,7 +51,8 @@
     "remark-directive": "^4.0.0",
     "typescript": "^5.9.3",
     "unist-util-visit": "^5.0.0",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.2",
+    "wrangler": "^4.79.0"
   },
   "overrides": {
     "ajv": "8.18.0",
