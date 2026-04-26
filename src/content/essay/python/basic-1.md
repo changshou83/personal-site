@@ -1,6 +1,6 @@
 ---
 title: Python 笔记（1）基础语法，控制流，变量和基本数据类型，错误处理
-description: 数据系统没有银弹，一切都是权衡，围绕四大维度展开对比与取舍
+description: Python 基础语法、控制流、数据类型与错误处理详解
 date: 2026-04-21
 badge: 笔记
 tags: [ "Python"]
