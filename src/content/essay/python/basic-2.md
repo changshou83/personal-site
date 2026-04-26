@@ -1,6 +1,6 @@
 ---
 title: Python 笔记（2）容器与推导式
-description: 数据系统没有银弹，一切都是权衡，围绕四大维度展开对比与取舍
+description: Python 容器与推导式详解，包括列表，字典，集合，元组。
 date: 2026-04-26
 badge: 笔记
 tags: ["Python"]
