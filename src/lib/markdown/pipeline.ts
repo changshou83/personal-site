@@ -49,6 +49,9 @@ export const createMarkdownSanitizeSchema = (): SanitizeSchema => {
 
   return {
     ...defaultSchema,
+    // 站点内容是自有 Markdown，不是用户提交内容。
+    // 保留原始 id，避免 SVG 渐变定义被前缀改写后与 url(#id) 引用失配。
+    clobber: (defaultSchema.clobber ?? []).filter((name) => name !== 'id'),
     tagNames: [
       // 默认 schema 不认识部分正文增强节点（如 figure / details / svg），
       // 这里按站点实际输出做增量扩展，而不是从零重写 schema。
@@ -63,6 +66,10 @@ export const createMarkdownSanitizeSchema = (): SanitizeSchema => {
       'dialog',
       'button',
       'svg',
+      'defs',
+      'linearGradient',
+      'radialGradient',
+      'stop',
       'path',
       'rect'
     ],
@@ -136,6 +143,24 @@ export const createMarkdownSanitizeSchema = (): SanitizeSchema => {
         'strokeLinejoin',
         'ariaHidden'
       ],
+      linearGradient: mergeAttrs(getSchemaAttrs(defaultSchema, 'linearGradient'), [
+        'x1',
+        'x2',
+        'y1',
+        'y2'
+      ]),
+      radialGradient: mergeAttrs(getSchemaAttrs(defaultSchema, 'radialGradient'), [
+        'cx',
+        'cy',
+        'r',
+        'gradientTransform',
+        'gradientUnits'
+      ]),
+      stop: mergeAttrs(getSchemaAttrs(defaultSchema, 'stop'), [
+        'offset',
+        'stopColor',
+        'stop-color'
+      ]),
       path: [
         ...getSchemaAttrs(defaultSchema, 'path'),
         'd',
