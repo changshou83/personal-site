@@ -270,6 +270,7 @@ author:
 - Quote：标准 `blockquote`，可选 `cite` 标注来源
 - Pullquote：`blockquote.pullquote`
 - Code Block：构建时增强工具栏/复制按钮/行号（作者无需额外写法）
+- Mermaid：使用标准 fenced code ` ```mermaid ` 写法；页面默认展示图表，可切回源码，并支持拖拽、缩放与适应页面
 
 Callout 示例：
 
@@ -287,6 +288,31 @@ HTML 示例：
   <p>这里是正文……</p>
 </div>
 ```
+
+### Mermaid 说明
+
+Mermaid 使用标准 Markdown 代码块语法：
+
+~~~md
+```mermaid
+flowchart LR
+  A[开始] --> B[结束]
+```
+~~~
+
+当前行为：
+
+- 默认进入图表预览态，而不是源码态
+- 右上角按钮可在图表和源码之间切换
+- 图表态支持拖拽、放大、缩小和适应页面
+- 预览区高度会尽量与对应代码块高度保持一致，减少切换抖动
+- Mermaid 渲染失败时，不显示图表视口，只显示错误信息
+
+实现位置：
+
+- 构建期：`src/lib/markdown/features/mermaid.ts`
+- 运行期：`src/scripts/markdown/features/mermaid.ts`
+- 交互控制器：`src/scripts/markdown/features/mermaid-dom.ts`、`src/scripts/markdown/features/mermaid-panzoom.ts`、`src/scripts/markdown/features/mermaid-renderer.ts`
 
 ## 字体与许可
 
@@ -357,4 +383,3 @@ git push origin main --tags
 ## 许可证
 
 License：MIT
-

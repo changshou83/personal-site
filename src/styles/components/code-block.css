@@ -139,7 +139,8 @@ body[data-code-line-numbers="off"] .prose pre:is(.astro-code, .shiki) .line {
   user-select: none;
 }
 
-.code-block .code-copy {
+.code-block .code-copy,
+.code-block .code-action {
   width: 24px;
   height: 24px;
   padding: 0;
@@ -151,25 +152,32 @@ body[data-code-line-numbers="off"] .prose pre:is(.astro-code, .shiki) .line {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 24px;
+  line-height: 1;
+  appearance: none;
   transition: color 0.2s ease, background-color 0.2s ease;
 }
 
-.code-block .code-copy:disabled {
+.code-block .code-copy:disabled,
+.code-block .code-action:disabled {
   cursor: default;
   opacity: 0.6;
 }
 
-.code-block .code-copy:hover:not(:disabled) {
+.code-block .code-copy:hover:not(:disabled),
+.code-block .code-action:hover:not(:disabled) {
   color: var(--text);
   background: var(--code-action-hover-bg);
 }
 
-.code-block .code-copy:focus-visible {
+.code-block .code-copy:focus-visible,
+.code-block .code-action:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
-.code-block .code-copy svg {
+.code-block .code-copy svg,
+.code-block .code-action svg {
   width: 14px;
   height: 14px;
   display: block;
@@ -185,6 +193,72 @@ body[data-code-line-numbers="off"] .prose pre:is(.astro-code, .shiki) .line {
 
 .code-block .code-copy[data-state="copied"] .icon-check {
   display: block;
+}
+
+.code-block .code-preview {
+  padding: 16px;
+  overflow: auto;
+  background: var(--code-content-bg);
+}
+
+.code-block .code-preview[hidden] {
+  display: none;
+}
+
+.code-block .code-preview svg {
+  display: block;
+  height: auto;
+}
+
+.code-block .mermaid-preview {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  background: var(--code-content-bg);
+}
+
+.code-block .mermaid-preview__controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-block .mermaid-preview__viewport {
+  position: relative;
+  width: 100%;
+  height: var(--mermaid-preview-height, 320px);
+  min-height: var(--mermaid-preview-height, 320px);
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+}
+
+.code-block .mermaid-preview__viewport[data-dragging="true"] {
+  cursor: grabbing;
+}
+
+.code-block .mermaid-preview__render {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.code-block .mermaid-preview__render svg {
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+.code-block .mermaid-preview__error {
+  padding: 16px;
+  color: var(--accent);
 }
 
 /* 语言图标基础样式 */

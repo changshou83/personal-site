@@ -144,7 +144,14 @@ const shouldShowMetaLine = articleMetaSettings.showDate
   />
 
   <script>
+    import { initMarkdownEnhancers } from '../scripts/markdown-enhancers';
     import { initArticleLightbox, initCodeCopyButtons } from '../scripts/lightbox';
+
+    const markdownRoot = document.querySelector('.prose');
+
+    if (markdownRoot) {
+      void initMarkdownEnhancers(markdownRoot);
+    }
 
     initCodeCopyButtons();
     initArticleLightbox({

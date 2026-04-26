@@ -142,7 +142,14 @@ for (const h of headings) {
   />
 
   <script>
+    import { initMarkdownEnhancers } from '../../scripts/markdown-enhancers';
     import { initArticleLightbox, initCodeCopyButtons } from '../../scripts/lightbox';
+
+    const markdownRoot = document.querySelector('.memo-content.prose');
+
+    if (markdownRoot) {
+      void initMarkdownEnhancers(markdownRoot);
+    }
 
     initCodeCopyButtons();
     initArticleLightbox({

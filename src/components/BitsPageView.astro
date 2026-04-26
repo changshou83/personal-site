@@ -256,6 +256,7 @@ const cards = await Promise.all(
 
   <script>
     import { createWithBase } from '../utils/format';
+    import { initMarkdownEnhancers } from '../scripts/markdown-enhancers';
     import '../scripts/bits-search.ts';
     import '../scripts/bits-lightbox.ts';
 
@@ -267,9 +268,12 @@ const cards = await Promise.all(
     const withBase = createWithBase(base);
     const fragmentPath = openBtn?.dataset.bitsDraftUrl ?? 'bits/draft-dialog/';
     const defaultLabel = labelEl?.textContent?.trim() || '碎碎念';
+    const markdownRoot = document.querySelector('[data-bits-browse]') ?? document;
 
     let fragmentPromise: Promise<void> | null = null;
     let controllerPromise: Promise<{ open: (options?: { opener?: HTMLElement | null }) => void }> | null = null;
+
+    void initMarkdownEnhancers(markdownRoot);
 
     const setLoadStatus = (text: string, tone: 'info' | 'error' = 'info') => {
       if (!loadStatus) return;

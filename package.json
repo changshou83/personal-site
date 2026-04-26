@@ -33,13 +33,14 @@
     "font:subset": "node ./scripts/font-subset.mjs",
     "font:build": "npm run font:charset && npm run font:subset",
     "new:bit": "node ./scripts/new-bit.mjs",
-    "deploy":  "astro build && wrangler deploy",
+    "deploy": "astro build && wrangler deploy",
     "preview:wrangler": "astro build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
-    "astro": "^6.1.1"
+    "astro": "^6.1.1",
+    "mermaid": "^11.14.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
