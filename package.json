@@ -32,6 +32,7 @@
     "font:charset": "node ./scripts/font-charset.mjs",
     "font:subset": "node ./scripts/font-subset.mjs",
     "font:build": "npm run font:charset && npm run font:subset",
+    "slides:html-to-pptx": "node ./scripts/export-html-slides-to-pptx.mjs",
     "new:bit": "node ./scripts/new-bit.mjs",
     "deploy": "astro build && wrangler deploy",
     "preview:wrangler": "astro build && wrangler deploy"

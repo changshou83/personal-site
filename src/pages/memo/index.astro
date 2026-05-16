@@ -6,6 +6,7 @@ import '../../styles/article.css';
 import '../../styles/memo.css';
 import { getEntry, render } from 'astro:content';
 import { getThemeSettings } from '../../lib/theme-settings';
+import { buildMemoTocGroups } from '../../lib/toc';
 
 const prod = import.meta.env.PROD;
 const DEFAULT_MEMO_TITLE = '生活小记';
@@ -27,25 +28,7 @@ const {
 const { Content, headings } = await render(entry);
 const memoTitle = page.memo.title ?? entry.data.title ?? DEFAULT_MEMO_TITLE;
 const memoSubtitle = page.memo.subtitle ?? entry.data.subtitle ?? DEFAULT_MEMO_SUBTITLE;
-
-// Build a grouped TOC: H2 as section titles, H3 as items.
-type TocItem = { text: string; slug: string };
-type TocGroup = { title: string; items: TocItem[] };
-
-const groups: TocGroup[] = [];
-let current: TocGroup | null = null;
-for (const h of headings) {
-  if (h.depth === 2) {
-    current = { title: h.text, items: [] };
-    groups.push(current);
-  } else if (h.depth === 3) {
-    if (!current) {
-      current = { title: '目录', items: [] };
-      groups.push(current);
-    }
-    current.items.push({ text: h.text, slug: h.slug });
-  }
-}
+const groups = buildMemoTocGroups(headings);
 ---
 
 <BaseLayout

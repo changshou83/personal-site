@@ -1,0 +1,187 @@
+---
+import type { ArticleTocEntry } from '../lib/toc';
+
+const {
+  entries,
+  mode = 'sidebar'
+} = Astro.props as {
+  entries: ArticleTocEntry[];
+  mode?: 'sidebar' | 'inline';
+};
+
+const hasEntries = entries.length > 0;
+---
+
+{
+  hasEntries ? (
+    <nav
+      class={`article-toc article-toc--${mode}`}
+      aria-label="目录"
+      data-article-toc
+      data-article-toc-mode={mode}
+    >
+      <details open>
+        <summary>目录</summary>
+        <ol class="article-toc__list">
+          {entries.map((entry, index) => (
+            <li class="article-toc__group">
+              <a
+                class="article-toc__link article-toc__link--section"
+                href={`#${entry.slug}`}
+                data-toc-link={entry.slug}
+              >
+                <span class="article-toc__num">{index + 1}</span>
+                <span>{entry.text}</span>
+              </a>
+              {entry.items.length ? (
+                <ol class="article-toc__children">
+                  {entry.items.map((item) => (
+                    <li>
+                      <a
+                        class="article-toc__link article-toc__link--subsection"
+                        href={`#${item.slug}`}
+                        data-toc-link={item.slug}
+                      >
+                        <span>{item.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              ) : null}
+            </li>
+          ))}
+        </ol>
+      </details>
+    </nav>
+  ) : null
+}
+
+<script is:inline>
+  (() => {
+    const tocs = Array.from(document.querySelectorAll('[data-article-toc]'))
+      .filter((node) => node instanceof HTMLElement);
+    if (!tocs.length) return;
+
+    let activeSlug = null;
+    let activeReady = false;
+
+    const mq = window.matchMedia('(max-width: 1359px)');
+    const threshold = 160;
+    const desktopTopOffset = 40;
+    const desktopMinWidth = 1360;
+
+    const desktopToc = document.querySelector('[data-article-toc-mode="sidebar"]');
+    const desktopTocShell = desktopToc instanceof HTMLElement
+      ? desktopToc.closest('.article-layout__toc--desktop')
+      : null;
+    const articleLayout = document.querySelector('.article-layout');
+
+    const links = Array.from(document.querySelectorAll('[data-toc-link]'))
+      .filter((node) => node instanceof HTMLAnchorElement);
+    const targets = links
+      .map((link) => document.getElementById(link.getAttribute('data-toc-link') || ''))
+      .filter((el) => el instanceof HTMLElement);
+
+    const setActive = (slug) => {
+      tocs.forEach((toc) => {
+        const tocLinks = Array.from(toc.querySelectorAll('[data-toc-link]'));
+        tocLinks.forEach((link) => {
+          const active = link.getAttribute('data-toc-link') === slug;
+          link.toggleAttribute('data-active', active);
+        });
+      });
+    };
+
+    const syncDetails = () => {
+      tocs.forEach((toc) => {
+        const details = toc.querySelector('details');
+        details?.setAttribute('open', '');
+      });
+    };
+
+    const resolveDockState = ({ layoutTop, layoutHeight, tocHeight, scrollY, topOffset }) => {
+      const safeLayoutHeight = Math.max(0, layoutHeight);
+      const safeTocHeight = Math.max(0, tocHeight);
+      const bottomTop = Math.max(0, safeLayoutHeight - safeTocHeight);
+      const viewportAnchor = scrollY + topOffset;
+
+      if (safeLayoutHeight <= safeTocHeight + topOffset) {
+        return { mode: 'top', absoluteTop: 0 };
+      }
+
+      if (viewportAnchor <= layoutTop) {
+        return { mode: 'top', absoluteTop: 0 };
+      }
+
+      if (viewportAnchor + safeTocHeight >= layoutTop + safeLayoutHeight) {
+        return { mode: 'bottom', absoluteTop: bottomTop };
+      }
+
+      return { mode: 'fixed', absoluteTop: bottomTop };
+    };
+
+    const applyDesktopDock = () => {
+      if (!(desktopTocShell instanceof HTMLElement) || !(desktopToc instanceof HTMLElement) || !(articleLayout instanceof HTMLElement)) {
+        return;
+      }
+
+      if (window.innerWidth < desktopMinWidth) {
+        desktopTocShell.dataset.tocDock = 'off';
+        desktopTocShell.style.removeProperty('--article-toc-absolute-top');
+        desktopTocShell.style.removeProperty('--article-toc-fixed-left');
+        desktopTocShell.style.removeProperty('--article-toc-fixed-top');
+        desktopTocShell.style.removeProperty('--article-toc-width');
+        return;
+      }
+
+      const layoutRect = articleLayout.getBoundingClientRect();
+      const shellRect = desktopTocShell.getBoundingClientRect();
+      const layoutTop = layoutRect.top + window.scrollY;
+      const layoutHeight = articleLayout.offsetHeight;
+      const tocHeight = desktopToc.offsetHeight;
+      const state = resolveDockState({
+        layoutTop,
+        layoutHeight,
+        tocHeight,
+        scrollY: window.scrollY,
+        topOffset: desktopTopOffset
+      });
+
+      desktopTocShell.dataset.tocDock = state.mode;
+      desktopTocShell.style.setProperty('--article-toc-absolute-top', `${state.absoluteTop}px`);
+      desktopTocShell.style.setProperty('--article-toc-fixed-left', `${shellRect.left}px`);
+      desktopTocShell.style.setProperty('--article-toc-fixed-top', `${desktopTopOffset}px`);
+      desktopTocShell.style.setProperty('--article-toc-width', `${shellRect.width}px`);
+    };
+
+    const updateActive = () => {
+      let nextActive = null;
+
+      for (const target of targets) {
+        const rect = target.getBoundingClientRect();
+        if (rect.top <= threshold) {
+          nextActive = target.id;
+        } else {
+          break;
+        }
+      }
+
+      if (!activeReady || nextActive !== activeSlug) {
+        activeSlug = nextActive;
+        activeReady = true;
+        setActive(activeSlug);
+      }
+    };
+
+    const onFrame = () => {
+      updateActive();
+      applyDesktopDock();
+    };
+
+    syncDetails();
+    mq.addEventListener('change', syncDetails);
+    window.addEventListener('scroll', onFrame, { passive: true });
+    window.addEventListener('resize', onFrame);
+    onFrame();
+  })();
+</script>

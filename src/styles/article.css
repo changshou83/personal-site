@@ -4,3 +4,51 @@
 @import "./components/callout.css";
 @import "./components/lightbox.css";
 @import "./components/code-block.css";
+@import "./components/toc.css";
+
+body.article-page .article-layout {
+  position: relative;
+}
+
+body.article-page .article-layout__main {
+  min-width: 0;
+}
+
+body.article-page .article-layout__toc {
+  min-width: 0;
+}
+
+body.article-page .article-layout__toc--desktop {
+  display: none;
+}
+
+body.article-page .article-layout__toc--mobile {
+  display: none;
+}
+
+@media (min-width: 1360px) {
+  body.article-page .article-layout__toc--desktop {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: calc(100% + 40px);
+    width: 280px;
+  }
+
+  body.article-page .article-layout__toc--desktop[data-toc-dock="fixed"] {
+    position: fixed;
+    top: var(--article-toc-fixed-top, 40px);
+    left: var(--article-toc-fixed-left);
+    width: var(--article-toc-width, 280px);
+  }
+
+  body.article-page .article-layout__toc--desktop[data-toc-dock="bottom"] {
+    top: var(--article-toc-absolute-top, 0px);
+  }
+}
+
+@media (max-width: 1359px) {
+  body.article-page .article-layout__toc--mobile {
+    display: block;
+  }
+}

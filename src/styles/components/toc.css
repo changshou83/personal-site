@@ -1,0 +1,140 @@
+.article-toc {
+  margin: 0;
+}
+
+.article-toc details {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel);
+  padding: 12px 16px 16px;
+}
+
+.article-toc summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.article-toc summary::-webkit-details-marker {
+  display: none;
+}
+
+.article-toc summary::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--text);
+  opacity: 0.55;
+}
+
+.article-toc summary::after {
+  content: "▶";
+  font-size: 10px;
+  color: var(--muted);
+  transition: transform 0.2s ease;
+}
+
+.article-toc details[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.article-toc__list,
+.article-toc__children {
+  margin: 0;
+}
+
+.article-toc__list {
+  list-style: none;
+  padding: 14px 0 0;
+  display: grid;
+  gap: 14px;
+}
+
+.article-toc__group {
+  min-width: 0;
+}
+
+.article-toc__children {
+  list-style: none;
+  padding: 10px 0 0 26px;
+  display: grid;
+  gap: 8px;
+}
+
+.article-toc__link {
+  min-width: 0;
+  color: var(--muted);
+  border-bottom: none;
+}
+
+.article-toc__link:hover,
+.article-toc__link[data-active="true"] {
+  color: var(--text);
+}
+
+.article-toc__link[data-active="true"] {
+  font-weight: 600;
+}
+
+.article-toc__link--section {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.article-toc__link--subsection {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.article-toc__num {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+:root[data-theme="dark"] .article-toc__num {
+  background: #242424;
+  border-color: #3a3a3a;
+}
+
+@media (min-width: 901px) {
+  .article-toc--sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .article-toc {
+    margin: 20px 0 32px;
+  }
+
+  .article-toc details {
+    padding: 10px 14px 14px;
+  }
+
+  .article-toc__list {
+    gap: 12px;
+  }
+
+  .article-toc__children {
+    padding-left: 22px;
+  }
+}
