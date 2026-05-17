@@ -119,6 +119,11 @@
   .article-toc--sidebar {
     width: 100%;
   }
+
+  .article-toc--sidebar details {
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+  }
 }
 
 @media (max-width: 900px) {
